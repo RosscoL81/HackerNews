@@ -1,12 +1,11 @@
 import React from 'react'
+import List from '../components/List'
 
 class HackerNewsContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      storyTitles: [],
       storyIds: [],
-      selectedStory: null
     }
     // this.handleSelectChange = this.handleSelectChange.bind(this);
 }
@@ -21,13 +20,23 @@ class HackerNewsContainer extends React.Component {
         return `https://hacker-news.firebaseio.com/v0/item/${id}.json `
       })
     })
-    .then(anything => this.setState({storyIds: anything}))
+    .then(storyIds => this.setState({storyIds: storyIds.slice(0, 10)}))
+    .then(promise => {
+      const fetchRequests = this.state.storyIds.map((url) => {
+        return fetch(url).then(res => res.json())
+      })
+      Promise.all(fetchRequests).then(articles => this.setState({stories: articles}))
+    })
     .catch(err => console.error)
   }
 
   render(){
     return (
-      <h1>Hi</h1>
+      <div>
+       <h1>Hacker News - top 10</h1>
+       <List stories={this.state.stories}
+       />
+      </div>
     )
   }
 

@@ -1,9 +1,11 @@
 import React from 'react'
+import ListItem from "./ListItem"
 
 const List = (props) => {
+
   return (
     <div>
-      {props.storyIds.map((story, index) =>{
+      {props.stories.map((story, index) =>{
         return (
           <ListItem
             value = {story}
@@ -11,6 +13,7 @@ const List = (props) => {
             />
         )
       })}
+
       </div>
   )
 
